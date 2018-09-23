@@ -1,22 +1,19 @@
-from flask import Flask, request, abort
-from datetime import datetime
-import gcaltools
 import json
 import traceback
+from datetime import datetime
 
-from linebot import (
-    LineBotApi, WebhookHandler
-)
-from linebot.exceptions import (
-    InvalidSignatureError, LineBotApiError
-)
-from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, StickerSendMessage
-)
+from flask import Flask, abort, request
+from linebotapiraw import LineBotApiRaw
+from linebot import LineBotApi, WebhookHandler
+from linebot.exceptions import InvalidSignatureError, LineBotApiError
+from linebot.models import (MessageEvent, StickerSendMessage, TextMessage,
+                            TextSendMessage)
+
+import gcaltools
 
 app = Flask(__name__)
 
-line_bot_api = LineBotApi('UE+D0Ot1CJIhR6/QxJnWW2GakEQW6XCXBltllhhI4PxRqHOA69BkaeWNCG4nSrw5q1RnDroACfFMD/yDYfj0+yWMy5GTfXZK6jIO5kJ4X/odeATHQRVxlfDA/LMddgJA4W2wRN9ea3hs5xVOfqbMpwdB04t89/1O/w1cDnyilFU=')
+line_bot_api = LineBotApiRaw('UE+D0Ot1CJIhR6/QxJnWW2GakEQW6XCXBltllhhI4PxRqHOA69BkaeWNCG4nSrw5q1RnDroACfFMD/yDYfj0+yWMy5GTfXZK6jIO5kJ4X/odeATHQRVxlfDA/LMddgJA4W2wRN9ea3hs5xVOfqbMpwdB04t89/1O/w1cDnyilFU=')
 handler = WebhookHandler('ed8de0ee82cfe03116bffbd74858569c')
 
 
