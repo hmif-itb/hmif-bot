@@ -3,13 +3,13 @@ import traceback
 from datetime import datetime
 
 from flask import Flask, abort, request
-from linebotapiraw import LineBotApiRaw
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import (MessageEvent, StickerSendMessage, TextMessage,
                             TextSendMessage)
 
 import gcaltools
+from linebotapiraw import LineBotApiRaw
 
 app = Flask(__name__)
 
@@ -132,7 +132,7 @@ def handle_message(event):
                     }
                 else:
                     response = TextSendMessage(text='Wah minggu ini belum ada event nih!')
-                line_bot_api.reply_message(event.reply_token, response)
+                line_bot_api.reply_message_raw(event.reply_token, response)
                 print(str, response)
         except:
             traceback.print_exc()
