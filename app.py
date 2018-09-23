@@ -84,7 +84,8 @@ def handle_message(event):
                                     "text" : startdate,
                                     "align" : "start",
                                     "weight" : "bold",
-                                    "flex" : 2
+                                    "flex" : 2,
+                                    "size" : "xs"
                                 },
                                 {
                                     "type" : "box",
@@ -94,12 +95,15 @@ def handle_message(event):
                                             "type" : "text",
                                             "text" : name,
                                             "gravity" : "top"
+                                            "size" : "xs",
+                                            "color" : "#007bff"
                                         },
                                         {
                                             "type" : "text",
                                             "text" : starttime + " - " + endtime,
                                             "gravity" : "bottom",
-                                            "size" : "sm"
+                                            "size" : "xxs",
+                                            "color" : "#999999"
                                         }
                                     ],
                                     "flex" : 3
@@ -137,7 +141,6 @@ def handle_message(event):
                 else:
                     response = TextSendMessage(text='Wah minggu ini belum ada event nih!')
                 line_bot_api.reply_message_raw(event.reply_token, response)
-                print(str, response)
         except:
             traceback.print_exc()
         
