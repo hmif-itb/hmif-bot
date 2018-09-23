@@ -94,7 +94,7 @@ def handle_message(event):
                                         {
                                             "type" : "text",
                                             "text" : name,
-                                            "gravity" : "top"
+                                            "gravity" : "top",
                                             "size" : "xs",
                                             "color" : "#007bff"
                                         },
