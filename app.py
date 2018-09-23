@@ -1,6 +1,6 @@
 import json
 import traceback
-from datetime import datetime
+import datetime
 
 from flask import Flask, abort, request, send_from_directory
 from linebot import LineBotApi, WebhookHandler
@@ -83,10 +83,10 @@ def handle_message(event):
                 if(len(res['events']) > 0):
                     contents = []
                     for t in res['events']:
-                        startdate = datetime.fromtimestamp(t["start"]).strftime('%d %b')
+                        startdate = datetime.datetime.fromtimestamp(t["start"]).strftime('%d %b')
                         name = t["name"]
-                        starttime = datetime.fromtimestamp(t["start"]).strftime('%H:%M')
-                        endtime = datetime.fromtimestamp(t["end"]).strftime('%H:%M')
+                        starttime = datetime.datetime.fromtimestamp(t["start"]).strftime('%H:%M')
+                        endtime = datetime.datetime.fromtimestamp(t["end"]).strftime('%H:%M')
                         content = {
                             "type" : "box",
                             "layout" : "horizontal",
