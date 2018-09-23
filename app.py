@@ -2,7 +2,7 @@ import json
 import traceback
 from datetime import datetime
 
-from flask import Flask, abort, request
+from flask import Flask, abort, request, send_from_directory
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import (MessageEvent, StickerSendMessage, TextMessage,
@@ -39,6 +39,11 @@ def callback():
 
     return 'OK'
 
+@app.route('/images/<path:path>')
+def send_js(path):
+    return send_from_directory('images', path)
+
+
 
 def isSimilar(message, template):
 	similarity = len(template)
@@ -56,15 +61,22 @@ def handle_message(event):
     splitted = message.split(' ')
 
     # Handle messages
-    if(isSimilar(splitted, ['ini', 'ada', 'apa', 'aja'])):
+    if(isSimilar(splitted, ['ada', 'apa', 'aja'])):
         res = {"status":False}
         title = ""
-        if(isSimilar(splitted, ['minggu'])):
-            res = gcaltools.getThisWeekEvent()
+        today = datetime.date.today()
+        if(isSimilar(splitted, ['minggu', 'ini'])):
+            res = gcaltools.getEvent(today - datetime.timedelta(days=today.weekday()+1),7)
             title = "Timeline HMIF - Minggu Ini"
-        elif(isSimilar(splitted, ['hari'])):
-            res = gcaltools.getTodayEvent()
+        elif(isSimilar(splitted, ['minggu', 'depan'])):
+            res = gcaltools.getEvent(today + datetime.timedelta(days=(7-today.weekday()-1)),7)
+            title = "Timeline HMIF - Minggu Depan"
+        elif(isSimilar(splitted, ['hari', 'ini'])):
+            res = gcaltools.getEvent(today, 0)
             title = "Timeline HMIF - Hari Ini"
+        elif(isSimilar(splitted, ['besok'])):
+            res = gcaltools.getEvent(today + datetime.timedelta(days=1), 0)
+            title = "Timeline HMIF - Besok"
         try:
             res = json.loads(res)
             if(res['status']):
@@ -106,7 +118,7 @@ def handle_message(event):
                                             "color" : "#999999"
                                         }
                                     ],
-                                    "flex" : 3
+                                    "flex" : 8
                                 }
                             ]
                         }
@@ -129,7 +141,7 @@ def handle_message(event):
                             },
                             "hero" : {
                                 "type" : "image",
-                                "url" : "https://drive.google.com/uc?export=view&id=1tv3z9drsKaxz_9nJVhCDN-Gpoc26wB_G"
+                                "url" : "https://hmifbot.herokuapp.com/images/header.jpg"
                             },
                             "body" : {
                                 "type" : "box",

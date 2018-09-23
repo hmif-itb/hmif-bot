@@ -7,16 +7,10 @@ import datetime, time, json
 config = configparser.ConfigParser()
 config.read('config.ini')
 config.sections()
-
-
-def getThisWeekEvent():
-    # Get monday
-    today = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-    monday = today - datetime.timedelta(days=today.weekday())
-
+def getEvent(date, duration):
     param = {
-        'date' : int(time.mktime(monday.timetuple())),
-        'duration': 6
+        'date' : int(int(time.mktime(date.timetuple()))),
+        'duration': int(duration)
     }
     data = {
         'method' : 'getEventsInDuration',
@@ -27,25 +21,11 @@ def getThisWeekEvent():
         return res.content
     else:
         return None
-
-def getTodayEvent():
-    param = {
-        'date' : int(time.time()),
-        'duration': 0
-    }
-    data = {
-        'method' : 'getEventsInDuration',
-        'param' : json.dumps(param)
-    }
-    res = requests.post(config['API']['endpoint'], data=data, verify=False)
-    if (res.status_code == 200):
-        return res.content
-    else:
-        return None
     
 if __name__ == '__main__':
-    res = json.loads(getTodayEvent())
-    
+    today = datetime.date.today()
+    res = json.loads(getEvent(today - datetime.timedelta(days=today.weekday()+1),7))
+    print(res)
     if(res['status']):
         if(len(res['events']) > 0):
             for event in res['events']:
