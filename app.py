@@ -141,6 +141,7 @@ def handle_message(event):
                             },
                             "hero" : {
                                 "type" : "image",
+                                "aspectMode" : "fit",
                                 "url" : "https://hmifbot.herokuapp.com/images/header.jpg"
                             },
                             "body" : {
