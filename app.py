@@ -2,6 +2,7 @@ from flask import Flask, request, abort
 from datetime import datetime
 import gcaltools
 import json
+import traceback
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -107,25 +108,29 @@ def handle_message(event):
                         contents.append(content)
                     
                     response = {
-                        "type" : "bubble",
-                        "header" : {
-                            "type" : "box",
-                            "layout" : "vertical",
-                            "contents" : [
-                                {
-                                    "type" : "text",
-                                    "text" : title
-                                }
-                            ]
-                        },
-                        "hero" : {
-                            "type" : "image",
-                            "url" : "https://hmifbot.herokuapp.com/images/header.jpg"
-                        },
-                        "body" : {
-                            "type" : "box",
-                            "layout" : "vertical",
-                            "contents" : contents
+                        "type" : "flex",
+                        "altText" : title,
+                        "contents" : {
+                            "type" : "bubble",
+                            "header" : {
+                                "type" : "box",
+                                "layout" : "vertical",
+                                "contents" : [
+                                    {
+                                        "type" : "text",
+                                        "text" : title
+                                    }
+                                ]
+                            },
+                            "hero" : {
+                                "type" : "image",
+                                "url" : "https://drive.google.com/uc?export=view&id=1tv3z9drsKaxz_9nJVhCDN-Gpoc26wB_G"
+                            },
+                            "body" : {
+                                "type" : "box",
+                                "layout" : "vertical",
+                                "contents" : contents
+                            }
                         }
                     }
                 else:
@@ -133,7 +138,7 @@ def handle_message(event):
                 line_bot_api.reply_message(event.reply_token, response)
                 print(str, response)
         except:
-            print('exception')
+            traceback.print_exc()
         
 
 if __name__ == "__main__":
