@@ -1,4 +1,5 @@
 from flask import Flask, request, abort
+from datetime import datetime
 import gcaltools
 import json
 
@@ -58,11 +59,80 @@ def handle_message(event):
 
     # Handle messages
     if(isSimilar(splitted, ['ini', 'ada', 'apa', 'aja'])):
+        res = {"status":False}
+        title = ""
         if(isSimilar(splitted, ['minggu'])):
-            event = gcaltools.getThisWeekEvent()
-            
+            res = gcaltools.getThisWeekEvent()
+            title = "Timeline HMIF - Minggu Ini"
         elif(isSimilar(splitted, ['hari'])):
-            event = gcaltools.getTodayEvent()
+            res = gcaltools.getTodayEvent()
+            title = "Timeline HMIF - Hari Ini"
+        try:
+            if(res['status']):
+                if(len(res['events']) > 0):
+                    contents = []
+                    for t in res['events']:
+                        startdate = datetime.fromtimestamp(t["start"]).strftime('%d %b')
+                        name = t["name"]
+                        starttime = datetime.fromtimestamp(t["start"]).strftime('%H:%M')
+                        endtime = datetime.fromtimestamp(t["end"]).strftime('%H:%M')
+                        content = {
+                            "type" : "box",
+                            "layout" : "horizontal",
+                            "contents" : [
+                                {
+                                    "type" : "text",
+                                    "text" : startdate,
+                                    "align" : "start"
+                                },
+                                {
+                                    "type" : "box",
+                                    "layout" : "vertical",
+                                    "contents" : [        
+                                        {
+                                            "type" : "text",
+                                            "text" : name,
+                                            "gravity" : "top"
+                                        },
+                                        {
+                                            "type" : "text",
+                                            "text" : starttime + " - " + endtime,
+                                            "gravity" : "bottom"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                        contents.append(content)
+                    
+                    response = {
+                        "type" : "bubble",
+                        "header" : {
+                            "type" : "box",
+                            "layout" : "vertical",
+                            "contents" : [
+                                {
+                                    "type" : "text",
+                                    "text" : title
+                                }
+                            ]
+                        },
+                        "hero" : {
+                            "type" : "image",
+                            "url" : "https://hmifbot.herokuapp.com/images/header.jpg"
+                        },
+                        "body" : {
+                            "type" : "box",
+                            "layout" : "vertical",
+                            "contents" : contents
+                        }
+                    }
+                else:
+                    response = TextSendMessage(text='Wah minggu ini belum ada event nih!')
+                line_bot_api.reply_message(event.reply_token, response)
+        except:
+            pass
+        
 
 if __name__ == "__main__":
     app.run()
