@@ -151,9 +151,10 @@ def handle_message(event):
                             }
                         }
                     }
+                    line_bot_api.reply_message_raw(event.reply_token, response)
                 else:
                     response = TextSendMessage(text='Wah minggu ini belum ada event nih!')
-                line_bot_api.reply_message_raw(event.reply_token, response)
+                    line_bot_api.reply_message(event.reply_token, response)
         except:
             traceback.print_exc()
         
