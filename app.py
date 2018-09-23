@@ -82,7 +82,9 @@ def handle_message(event):
                                 {
                                     "type" : "text",
                                     "text" : startdate,
-                                    "align" : "start"
+                                    "align" : "start",
+                                    "weight" : "bold",
+                                    "flex" : 2
                                 },
                                 {
                                     "type" : "box",
@@ -96,9 +98,11 @@ def handle_message(event):
                                         {
                                             "type" : "text",
                                             "text" : starttime + " - " + endtime,
-                                            "gravity" : "bottom"
+                                            "gravity" : "bottom",
+                                            "size" : "sm"
                                         }
-                                    ]
+                                    ],
+                                    "flex" : 3
                                 }
                             ]
                         }
