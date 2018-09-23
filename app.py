@@ -131,8 +131,9 @@ def handle_message(event):
                 else:
                     response = TextSendMessage(text='Wah minggu ini belum ada event nih!')
                 line_bot_api.reply_message(event.reply_token, response)
+                print(str, response)
         except:
-            pass
+            print('exception')
         
 
 if __name__ == "__main__":
