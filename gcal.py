@@ -30,4 +30,4 @@ if __name__ == '__main__':
     days = None if len(sys.argv) < 3 else sys.argv[2]
     start_date = None if len(sys.argv) < 4 else sys.argv[3]
 
-    print(getEvent(start_date=start_date, days=days))
+    print(getEvents(start_date=start_date, days=days))
