@@ -12,6 +12,7 @@ import gcal
 
 
 app = Flask(__name__)
+app.debug = True
 
 hmif_bot = HMIFLineBotApi(config.get('access_token'))
 handler = WebhookHandler(config.get('secret'))
@@ -44,6 +45,7 @@ def send_images(path):
 def handle_message(event):
     message = event.message.text
     message = message.lower()
+    print(message)
 
     # Handle messages
     if (text_contains(message, ['ada', 'apa', 'aja'])):

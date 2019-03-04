@@ -5,7 +5,7 @@ import sys
 endpoint = 'https://script.google.com/macros/s/AKfycby1bkfdrbVvESS013VYyyprtEW1y_UBGQEMEj7I0k1FsPLxTOc/exec'
 
 
-def getEvent(start_date=None, days=None):
+def getEvents(start_date=None, days=None):
     param = dict()
     if (start_date is not None):
         param['startDate'] = start_date.strftime('%Y-%m-%d')
