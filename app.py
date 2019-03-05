@@ -69,6 +69,10 @@ def handle_message(event):
             title = "Timeline HMIF - Besok"
             start_date = today + datetime.timedelta(days=1)
             days = 0
+        elif (text_contains(message, ['H-3', 'lebaran'])):
+            title = "Timeline HMIF - H-3 Lebaran"
+            start_date = datetime.datetime(2019, 6, 2).date()
+            days = 0
 
         pass_code = None
         if (isinstance(event.source, SourceGroup)):
