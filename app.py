@@ -3,7 +3,7 @@ import datetime
 from flask import Flask, abort, request, send_from_directory
 from linebot import WebhookHandler
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
-from linebot.models import MessageEvent, TextMessage
+from linebot.models import MessageEvent, TextMessage, SourceGroup
 
 from bot import HMIFLineBotApi
 from config import config
@@ -45,7 +45,6 @@ def send_images(path):
 def handle_message(event):
     message = event.message.text
     message = message.lower()
-    print(message)
 
     # Handle messages
     if (text_contains(message, ['ada', 'apa', 'aja'])):
@@ -70,7 +69,12 @@ def handle_message(event):
             title = "Timeline HMIF - Besok"
             start_date = today + datetime.timedelta(days=1)
             days = 0
-        events = gcal.getEvents(start_date=start_date, days=days)
+
+        pass_code = None
+        if (isinstance(event.source, SourceGroup)):
+            if (event.source.group_id == config.get('private_group')):
+                pass_code = config.get('pass_code')
+        events = gcal.getEvents(start_date=start_date, days=days, pass_code=pass_code)
 
         try:
             hmif_bot.send_events(event, title, events)
