@@ -27,8 +27,12 @@ class HMIFLineBotApi(LineBotApi):
             for event in events:
                 name = event.get('name')
                 startdate = datetime.fromtimestamp(event.get('start')).strftime('%d %b')
+                enddate = datetime.fromtimestamp(event.get('end')).strftime('%d %b')
                 starttime = datetime.fromtimestamp(event.get('start')).strftime('%H:%M')
                 endtime = datetime.fromtimestamp(event.get('end')).strftime('%H:%M')
+                duration = '{} - {}'.format(starttime, endtime)
+                if (startdate != enddate):
+                    duration = '{} {} - {} {}'.format(startdate, starttime, enddate, endtime)
                 content = {
                     'type': 'box',
                     'layout': 'horizontal',
@@ -55,7 +59,7 @@ class HMIFLineBotApi(LineBotApi):
                                 },
                                 {
                                     'type': 'text',
-                                    'text': starttime + ' - ' + endtime,
+                                    'text': duration
                                     'gravity': 'bottom',
                                     'size': 'xxs',
                                     'color': '#999999'
