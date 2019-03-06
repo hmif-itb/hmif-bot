@@ -59,7 +59,7 @@ class HMIFLineBotApi(LineBotApi):
                                 },
                                 {
                                     'type': 'text',
-                                    'text': duration
+                                    'text': duration,
                                     'gravity': 'bottom',
                                     'size': 'xxs',
                                     'color': '#999999'
