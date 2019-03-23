@@ -31,7 +31,9 @@ class HMIFLineBotApi(LineBotApi):
                 starttime = datetime.fromtimestamp(event.get('start')).strftime('%H:%M')
                 endtime = datetime.fromtimestamp(event.get('end')).strftime('%H:%M')
                 duration = '{} - {}'.format(starttime, endtime)
-                if (startdate != enddate):
+                if (event.get('allDay', False)):
+                    duration = '{}'.format(startdate)
+                elif (startdate != enddate):
                     duration = '{} {} - {} {}'.format(startdate, starttime, enddate, endtime)
                 content = {
                     'type': 'box',
