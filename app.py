@@ -3,7 +3,7 @@ import datetime
 from flask import Flask, abort, request, send_from_directory
 from linebot import WebhookHandler
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
-from linebot.models import MessageEvent, TextMessage, SourceGroup
+from linebot.models import MessageEvent, TextMessage, SourceGroup, SourceUser, SourceRoom
 
 from bot import HMIFLineBotApi
 from config import config
@@ -53,9 +53,13 @@ def handle_message(event):
         start_date = None
         days = None
 
-        if (text_contains(message, ['minggu', 'ini'])):
+        if (text_contains(message, ['bulan', 'ini'])):
+            title = "Timeline HMIF - Bulan Ini"
+            start_date = today
+            days = 30
+        elif (text_contains(message, ['minggu', 'ini'])):
             title = "Timeline HMIF - Minggu Ini"
-            start_date = today - datetime.timedelta(days=today.weekday() + 1)
+            start_date = today
             days = 7
         elif (text_contains(message, ['minggu', 'depan'])):
             title = "Timeline HMIF - Minggu Depan"
@@ -70,11 +74,15 @@ def handle_message(event):
             start_date = today + datetime.timedelta(days=1)
             days = 0
 
-        pass_code = None
+        source_id = None
         if (isinstance(event.source, SourceGroup)):
-            if (event.source.group_id == config.get('private_group')):
-                pass_code = config.get('pass_code')
-        events = gcal.getEvents(start_date=start_date, days=days, pass_code=pass_code)
+            source_id = event.source.group_id
+        if (isinstance(event.source, SourceRoom)):
+            source_id = event.source.room_id
+        if (isinstance(event.source, SourceUser)):
+            source_id = event.source.user_id
+        print(source_id)
+        events = gcal.getEvents(message, source_id, start_date=start_date, days=days)
 
         try:
             hmif_bot.send_events(event, title, events)

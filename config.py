@@ -3,7 +3,7 @@ import sys
 
 
 config = dict()
-config_keys = ['secret', 'access_token', 'private_group', 'pass_code']
+config_keys = ['secret', 'access_token']
 
 if ('--dev' in sys.argv):
     with open('.env', 'r') as envfile:

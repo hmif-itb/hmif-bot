@@ -5,14 +5,14 @@ import sys
 endpoint = 'https://script.google.com/macros/s/AKfycby1bkfdrbVvESS013VYyyprtEW1y_UBGQEMEj7I0k1FsPLxTOc/exec'
 
 
-def getEvents(start_date=None, days=None, pass_code=None):
+def getEvents(text_message, group_id, start_date=None, days=None):
     param = dict()
+    param['textMessage'] = text_message
+    param['groupId'] = group_id
     if (start_date is not None):
         param['startDate'] = start_date.strftime('%Y-%m-%d')
     if (days is not None):
         param['days'] = days
-    if (pass_code is not None):
-        param['passCode'] = pass_code
 
     data = dict()
     data['action'] = 'getEventsByDuration'
