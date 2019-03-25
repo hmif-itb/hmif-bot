@@ -2,7 +2,7 @@ import json
 import requests
 import sys
 
-endpoint = 'https://script.google.com/macros/s/AKfycby1bkfdrbVvESS013VYyyprtEW1y_UBGQEMEj7I0k1FsPLxTOc/exec'
+endpoint = 'https://script.google.com/macros/s/AKfycbw9x9Y-9dQucsjVRoevf-QAB1kADg6Z7Sy8sS_424ueX8iRjNjU/exec'
 
 
 def getEvents(text_message, group_id, start_date=None, days=None):
