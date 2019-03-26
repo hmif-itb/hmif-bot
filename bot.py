@@ -78,7 +78,7 @@ class HMIFLineBotApi(LineBotApi):
                             'text': startdate,
                             'align': 'start',
                             'weight': 'bold',
-                            'flex': 2,
+                            'flex': 4,
                             'size': 'xs'
                         },
                         {
