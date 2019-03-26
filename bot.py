@@ -26,8 +26,8 @@ class HMIFLineBotApi(LineBotApi):
             contents = []
             for event in events:
                 name = event.get('name')
-                startdate = datetime.fromtimestamp(event.get('start')).strftime('%d %b')
-                enddate = datetime.fromtimestamp(event.get('end')).strftime('%d %b')
+                startdate = datetime.fromtimestamp(event.get('start')).strftime('%a %d %b')
+                enddate = datetime.fromtimestamp(event.get('end')).strftime('%a %d %b')
                 starttime = datetime.fromtimestamp(event.get('start')).strftime('%H:%M')
                 endtime = datetime.fromtimestamp(event.get('end')).strftime('%H:%M')
                 duration = '{} - {}'.format(starttime, endtime)
@@ -35,6 +35,40 @@ class HMIFLineBotApi(LineBotApi):
                     duration = '{}'.format(startdate)
                 elif (startdate != enddate):
                     duration = '{} {} - {} {}'.format(startdate, starttime, enddate, endtime)
+
+                right_box_contents = []
+                right_box_contents.append({
+                    'type': 'text',
+                    'text': name,
+                    'gravity': 'top',
+                    'size': 'xs',
+                    'color': '#007bff',
+                    'wrap': True
+                })
+                if (not event.get('allDay', False)):
+                    right_box_contents.append({
+                        'type': 'text',
+                        'text': duration,
+                        'gravity': 'bottom',
+                        'size': 'xxs',
+                        'color': '#999999'
+                    })
+                if (len(event.get('desc', '')) > 0):
+                    right_box_contents.append({
+                        'type': 'text',
+                        'text': event.get('desc', ''),
+                        'gravity': 'bottom',
+                        'size': 'xxs',
+                        'color': '#999999'
+                    })
+                if (len(event.get('location', '')) > 0):
+                    right_box_contents.append({
+                        'type': 'text',
+                        'text': event.get('location', ''),
+                        'gravity': 'bottom',
+                        'size': 'xxs',
+                        'color': '#999999'
+                    })
                 content = {
                     'type': 'box',
                     'layout': 'horizontal',
@@ -50,23 +84,7 @@ class HMIFLineBotApi(LineBotApi):
                         {
                             'type': 'box',
                             'layout': 'vertical',
-                            'contents': [
-                                {
-                                    'type': 'text',
-                                    'text': name,
-                                    'gravity': 'top',
-                                    'size': 'xs',
-                                    'color': '#007bff',
-                                    'wrap': True
-                                },
-                                {
-                                    'type': 'text',
-                                    'text': duration,
-                                    'gravity': 'bottom',
-                                    'size': 'xxs',
-                                    'color': '#999999'
-                                }
-                            ],
+                            'contents': right_box_contents,
                             'flex': 8
                         }
                     ]
