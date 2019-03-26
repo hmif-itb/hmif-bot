@@ -124,7 +124,8 @@ class HMIFLineBotApi(LineBotApi):
                     'body': {
                         'type': 'box',
                         'layout': 'vertical',
-                        'contents': contents
+                        'spacing': 'md',
+                        'contents': contents,
                     }
                 }
             }
