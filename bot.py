@@ -21,65 +21,89 @@ class HMIFLineBotApi(LineBotApi):
             '/v2/bot/message/reply', data=json.dumps(data), timeout=timeout
         )
 
+    def __create_left_box_content(self, event):
+        startday = datetime.fromtimestamp(event.get('start')).strftime('%a')
+        startdate = datetime.fromtimestamp(event.get('start')).strftime('%d %b')
+        left_box_contents = []
+        left_box_contents.append({
+            'type': 'text',
+            'text': startday,
+            'gravity': 'top',
+            'align': 'start',
+            'weight': 'bold',
+            'size': 'xs'
+        })
+        left_box_contents.append({
+            'type': 'text',
+            'text': startdate,
+            'gravity': 'top',
+            'align': 'start',
+            'weight': 'bold',
+            'size': 'xs'
+        })
+        return left_box_contents
+
+    def __create_right_box_content(self, event):
+        right_box_contents = []
+        right_box_contents.append({
+            'type': 'text',
+            'text': event.get('name'),
+            'gravity': 'top',
+            'size': 'xs',
+            'color': '#101010',
+            'wrap': True
+        })
+        if (not event.get('allDay', False)):
+            startdate = datetime.fromtimestamp(event.get('start')).strftime('%a %d %b')
+            enddate = datetime.fromtimestamp(event.get('end')).strftime('%a %d %b')
+
+            starttime = datetime.fromtimestamp(event.get('start')).strftime('%H:%M')
+            endtime = datetime.fromtimestamp(event.get('end')).strftime('%H:%M')
+
+            duration = '{} - {}'.format(starttime, endtime)
+            if (startdate != enddate):
+                duration = '{} {} - {} {}'.format(startdate, starttime, enddate, endtime)
+
+            right_box_contents.append({
+                'type': 'text',
+                'text': duration,
+                'gravity': 'bottom',
+                'size': 'xxs',
+                'color': '#999999'
+            })
+        if (len(event.get('desc', '')) > 0):
+            right_box_contents.append({
+                'type': 'text',
+                'text': event.get('desc', ''),
+                'gravity': 'bottom',
+                'size': 'xxs',
+                'color': '#999999'
+            })
+        if (len(event.get('location', '')) > 0):
+            right_box_contents.append({
+                'type': 'text',
+                'text': event.get('location', ''),
+                'gravity': 'bottom',
+                'size': 'xxs',
+                'color': '#999999'
+            })
+        return right_box_contents
+
     def send_events(self, line_event, title, events):
         if (len(events) > 0):
             contents = []
             for event in events:
-                name = event.get('name')
-                startdate = datetime.fromtimestamp(event.get('start')).strftime('%a %d %b')
-                enddate = datetime.fromtimestamp(event.get('end')).strftime('%a %d %b')
-                starttime = datetime.fromtimestamp(event.get('start')).strftime('%H:%M')
-                endtime = datetime.fromtimestamp(event.get('end')).strftime('%H:%M')
-                duration = '{} - {}'.format(starttime, endtime)
-                if (event.get('allDay', False)):
-                    duration = '{}'.format(startdate)
-                elif (startdate != enddate):
-                    duration = '{} {} - {} {}'.format(startdate, starttime, enddate, endtime)
-
-                right_box_contents = []
-                right_box_contents.append({
-                    'type': 'text',
-                    'text': name,
-                    'gravity': 'top',
-                    'size': 'xs',
-                    'color': '#007bff',
-                    'wrap': True
-                })
-                if (not event.get('allDay', False)):
-                    right_box_contents.append({
-                        'type': 'text',
-                        'text': duration,
-                        'gravity': 'bottom',
-                        'size': 'xxs',
-                        'color': '#999999'
-                    })
-                if (len(event.get('desc', '')) > 0):
-                    right_box_contents.append({
-                        'type': 'text',
-                        'text': event.get('desc', ''),
-                        'gravity': 'bottom',
-                        'size': 'xxs',
-                        'color': '#999999'
-                    })
-                if (len(event.get('location', '')) > 0):
-                    right_box_contents.append({
-                        'type': 'text',
-                        'text': event.get('location', ''),
-                        'gravity': 'bottom',
-                        'size': 'xxs',
-                        'color': '#999999'
-                    })
+                left_box_contents = self.__create_left_box_content(event)
+                right_box_contents = self.__create_right_box_content(event)
                 content = {
                     'type': 'box',
                     'layout': 'horizontal',
                     'contents': [
                         {
-                            'type': 'text',
-                            'text': startdate,
-                            'align': 'start',
-                            'weight': 'bold',
-                            'flex': 4,
-                            'size': 'xs'
+                            'type': 'box',
+                            'layout': 'vertical',
+                            'contents': left_box_contents,
+                            'flex': 2,
                         },
                         {
                             'type': 'box',
@@ -106,11 +130,6 @@ class HMIFLineBotApi(LineBotApi):
                             }
                         ]
                     },
-                    # 'hero': {
-                    #     'type': 'image',
-                    #     'aspectMode': 'fit',
-                    #     'url': 'https://hmifbot.herokuapp.com/images/header.jpg'
-                    # },
                     'body': {
                         'type': 'box',
                         'layout': 'vertical',
