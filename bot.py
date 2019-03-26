@@ -29,7 +29,7 @@ class HMIFLineBotApi(LineBotApi):
             'type': 'text',
             'text': startday,
             'gravity': 'top',
-            'align': 'start',
+            'align': 'end',
             'weight': 'bold',
             'size': 'xs'
         })
@@ -37,7 +37,7 @@ class HMIFLineBotApi(LineBotApi):
             'type': 'text',
             'text': startdate,
             'gravity': 'top',
-            'align': 'start',
+            'align': 'end',
             'weight': 'bold',
             'size': 'xs'
         })
@@ -120,16 +120,6 @@ class HMIFLineBotApi(LineBotApi):
                 'altText': title,
                 'contents': {
                     'type': 'bubble',
-                    'header': {
-                        'type': 'box',
-                        'layout': 'vertical',
-                        'contents': [
-                            {
-                                'type': 'text',
-                                'text': title
-                            }
-                        ]
-                    },
                     'body': {
                         'type': 'box',
                         'layout': 'vertical',
