@@ -98,6 +98,7 @@ class HMIFLineBotApi(LineBotApi):
                 content = {
                     'type': 'box',
                     'layout': 'horizontal',
+                    'spacing': 'xs',
                     'contents': [
                         {
                             'type': 'box',
@@ -109,7 +110,7 @@ class HMIFLineBotApi(LineBotApi):
                             'type': 'box',
                             'layout': 'vertical',
                             'contents': right_box_contents,
-                            'flex': 8
+                            'flex': 8,
                         }
                     ]
                 }
