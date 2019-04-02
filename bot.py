@@ -77,7 +77,8 @@ class HMIFLineBotApi(LineBotApi):
                 'text': event.get('desc', ''),
                 'gravity': 'bottom',
                 'size': 'xxs',
-                'color': '#999999'
+                'color': '#999999',
+                'wrap': True
             })
         if (len(event.get('location', '')) > 0):
             right_box_contents.append({
