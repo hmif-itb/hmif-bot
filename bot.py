@@ -53,16 +53,18 @@ class HMIFLineBotApi(LineBotApi):
             'color': '#101010',
             'wrap': True
         })
-        if (not event.get('allDay', False)):
-            startdate = datetime.fromtimestamp(event.get('start')).strftime('%a %d %b')
-            enddate = datetime.fromtimestamp(event.get('end')).strftime('%a %d %b')
-
+        startdate = datetime.fromtimestamp(event.get('start')).strftime('%a %d %b')
+        enddate = datetime.fromtimestamp(event.get('end')).strftime('%a %d %b')
+        if (not event.get('allDay', False) or startdate != enddate):
             starttime = datetime.fromtimestamp(event.get('start')).strftime('%H:%M')
             endtime = datetime.fromtimestamp(event.get('end')).strftime('%H:%M')
 
             duration = '{} - {}'.format(starttime, endtime)
             if (startdate != enddate):
-                duration = '{} {} - {} {}'.format(startdate, starttime, enddate, endtime)
+                if (event.get('allDay', False)):
+                    duration = '{} - {}'.format(startdate, enddate)
+                else:
+                    duration = '{} {} - {} {}'.format(startdate, starttime, enddate, endtime)
 
             right_box_contents.append({
                 'type': 'text',
