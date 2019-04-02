@@ -47,29 +47,29 @@ def handle_message(event):
     message = message.lower()
 
     # Handle messages
-    if (text_contains(message, ['ada', 'apa', 'aja'], True)):
+    if (text_contains(message, ['ada', 'apa', 'aja'], series=True)):
         today = datetime.date.today()
         title = ""
         start_date = None
         days = None
 
-        if (text_contains(message, ['bulan', 'ini'])):
+        if (text_contains(message, ['bulan', 'ini'], series=True)):
             title = "Timeline HMIF - Bulan Ini"
             start_date = today
             days = 30
-        elif (text_contains(message, ['minggu', 'ini'])):
+        elif (text_contains(message, ['minggu', 'ini'], series=True)):
             title = "Timeline HMIF - Minggu Ini"
             start_date = today
             days = 7
-        elif (text_contains(message, ['minggu', 'depan'])):
+        elif (text_contains(message, ['minggu', 'depan'], series=True)):
             title = "Timeline HMIF - Minggu Depan"
             start_date = today + datetime.timedelta(days=(7 - today.weekday() - 1))
             days = 7
-        elif (text_contains(message, ['hari', 'ini'])):
+        elif (text_contains(message, ['hari', 'ini'], series=True)):
             title = "Timeline HMIF - Hari Ini"
             start_date = today
             days = 0
-        elif (text_contains(message, ['besok'])):
+        elif (text_contains(message, ['besok'], series=True)):
             title = "Timeline HMIF - Besok"
             start_date = today + datetime.timedelta(days=1)
             days = 0
