@@ -59,11 +59,17 @@ class HMIFLineBotApi(LineBotApi):
             starttime = datetime.fromtimestamp(event.get('start')).strftime('%H:%M')
             endtime = datetime.fromtimestamp(event.get('end')).strftime('%H:%M')
 
+            # event that last less than a day
             duration = '{} - {}'.format(starttime, endtime)
             if (startdate != enddate):
                 if (event.get('allDay', False)):
+                    # all day event that last more than a day
                     duration = '{} - {}'.format(startdate, enddate)
+                elif (event.get('end') - event.get('start') <= 10 * 60):
+                    # event that exist only as a mark, not event
+                    duration = '{}'.format(starttime)
                 else:
+                    # event that last more than a day, but not all day
                     duration = '{} {} - {} {}'.format(startdate, starttime, enddate, endtime)
 
             right_box_contents.append({
