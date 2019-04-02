@@ -55,7 +55,7 @@ class HMIFLineBotApi(LineBotApi):
         })
         startdate = datetime.fromtimestamp(event.get('start')).strftime('%a %d %b')
         enddate = datetime.fromtimestamp(event.get('end')).strftime('%a %d %b')
-        if (not event.get('allDay', False) or startdate != enddate):
+        if (not event.get('allDay', False) or event.get('end') - event.get('start') > 24 * 60 * 60):
             starttime = datetime.fromtimestamp(event.get('start')).strftime('%H:%M')
             endtime = datetime.fromtimestamp(event.get('end')).strftime('%H:%M')
 
