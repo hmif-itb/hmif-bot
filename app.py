@@ -47,7 +47,7 @@ def handle_message(event):
     message = message.lower()
 
     # Handle messages
-    if (text_contains(message, ['ada', 'apa', 'aja'], series=True)):
+    if (text_contains(message, ['ada', 'apa', 'aja'], series=True, max_len=75)):
         today = datetime.date.today()
         title = ""
         start_date = None

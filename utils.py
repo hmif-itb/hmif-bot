@@ -1,4 +1,4 @@
-def text_contains(text, keywords, series=False, max_len=75):
+def text_contains(text, keywords, series=False, max_len=9999):
     if len(text) > max_len:
         return False
 
