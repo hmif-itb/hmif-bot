@@ -1,4 +1,7 @@
-def text_contains(text, keywords, series=False):
+def text_contains(text, keywords, series=False, max_len=9999):
+    if len(text) > max_len:
+        return False
+
     if series:
         idx = 0
         for keyword in keywords:
