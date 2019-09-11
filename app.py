@@ -20,6 +20,9 @@ handler = WebhookHandler(config.get('secret'))
 
 replies_massa = [
     'M****? KARTU KUNING MAS MBA!',
+    'Ga ada m*ss* di HMIF, adanya anggota',
+    'M****? Tolong ini ditendang dong',
+    'Eh siapa bilang m****? Ntar dicubit Deborah lho',
 ]
 
 
