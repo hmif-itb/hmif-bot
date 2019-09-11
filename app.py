@@ -1,14 +1,15 @@
 import datetime
+import gcal
+import random
 
 from flask import Flask, abort, request, send_from_directory
 from linebot import WebhookHandler
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
-from linebot.models import MessageEvent, TextMessage, SourceGroup, SourceUser, SourceRoom
+from linebot.models import MessageEvent, TextMessage, SourceGroup, SourceUser, SourceRoom, TextSendMessage
 
 from bot import HMIFLineBotApi
 from config import config
 from utils import text_contains
-import gcal
 
 
 app = Flask(__name__)
@@ -16,6 +17,10 @@ app.debug = True
 
 hmif_bot = HMIFLineBotApi(config.get('access_token'))
 handler = WebhookHandler(config.get('secret'))
+
+replies_massa = [
+    'M****? KARTU KUNING MAS MBA!',
+]
 
 
 @app.route("/line-webhook", methods=['POST'])
@@ -86,6 +91,13 @@ def handle_message(event):
 
         try:
             hmif_bot.send_events(event, title, events)
+        except Exception as e:
+            print(e)
+    elif (text_contains(message, ['massa'])):
+        reply_text = random.choice(replies_massa)
+        response = TextSendMessage(text=reply_text)
+        try:
+            hmif_bot.reply_message(event.reply_token, response)
         except Exception as e:
             print(e)
 
