@@ -5,7 +5,15 @@ import random
 from flask import Flask, abort, request, send_from_directory
 from linebot import WebhookHandler
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
-from linebot.models import MessageEvent, TextMessage, SourceGroup, SourceUser, SourceRoom, TextSendMessage
+from linebot.models import (
+    ImageSendMessage,
+    MessageEvent,
+    SourceGroup,
+    SourceRoom,
+    SourceUser,
+    TextMessage,
+    TextSendMessage,
+)
 
 from bot import HMIFLineBotApi
 from config import config
@@ -19,10 +27,14 @@ hmif_bot = HMIFLineBotApi(config.get('access_token'))
 handler = WebhookHandler(config.get('secret'))
 
 replies_massa = [
-    'M****? KARTU KUNING MAS MBA!',
-    'Ga ada m*ss* di HMIF, adanya anggota',
-    'M****? Tolong ini ditendang dong',
-    'Eh siapa bilang m****? Ntar dicubit Deborah lho',
+    TextSendMessage(text='M****? KARTU KUNING MAS MBA!'),
+    TextSendMessage(text='Ga ada m*ss* di HMIF, adanya anggota'),
+    TextSendMessage(text='M****? Tolong ini ditendang dong'),
+    TextSendMessage(text='Eh siapa bilang m****? Ntar dicubit Deborah lho'),
+    ImageSendMessage(original_content_url='http://hmifbot.herokuapp.com/images/Meme-1.png',
+                     preview_image_url='http://hmifbot.herokuapp.com/images/Meme-1.png'),
+    ImageSendMessage(original_content_url='http://hmifbot.herokuapp.com/images/Meme-2.png',
+                     preview_image_url='http://hmifbot.herokuapp.com/images/Meme-2.png'),
 ]
 
 
@@ -97,8 +109,7 @@ def handle_message(event):
         except Exception as e:
             print(e)
     elif (text_contains(message, ['massa'])):
-        reply_text = random.choice(replies_massa)
-        response = TextSendMessage(text=reply_text)
+        response = random.choice(replies_massa)
         try:
             hmif_bot.reply_message(event.reply_token, response)
         except Exception as e:
