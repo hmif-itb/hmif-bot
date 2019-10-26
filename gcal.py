@@ -5,9 +5,8 @@ from utils import text_contains
 
 endpoint = 'https://script.google.com/macros/s/AKfycbw9x9Y-9dQucsjVRoevf-QAB1kADg6Z7Sy8sS_424ueX8iRjNjU/exec'
 
-
-def getEvents(text_message, group_id, start_date=None, days=None):
-    year = 0
+def getStudentYearFromText(text_message):
+    year = None
 
     if text_contains(text_message, ['untuk', 'bit'], series=True):
         year = 16
@@ -15,6 +14,21 @@ def getEvents(text_message, group_id, start_date=None, days=None):
         year = 17
     elif text_contains(text_message, ['untuk', 'decrypt'], series=True):
         year = 18
+
+    return year
+
+def eventIsAssignmentForYear(event, year):
+    return event['name'].find(str(year) + ']') != -1
+
+def eventFilterAssignmentByYear(events, year):
+    filtered = []
+    for event in events:
+        if eventIsAssignmentForYear(event, year):
+            filtered.append(event)
+    return filtered
+
+def getEvents(text_message, group_id, start_date=None, days=None):
+    year = getStudentYearFromText(text_message)
 
     param = dict()
     param['textMessage'] = text_message
@@ -33,12 +47,8 @@ def getEvents(text_message, group_id, start_date=None, days=None):
         result = json.loads(str(r.content, 'utf-8'))
         if (result.get('code') != 'SUCCESS'):
             raise result.get('message')
-        if year > 0:
-            filtered_result = []
-            for res in result.get('result'):
-                if res['name'].find(str(year) + ']') != -1:
-                    filtered_result.append(res)
-            return filtered_result
+        if year is not None:
+            return eventFilterAssignmentByYear(result.get('result'), year)
         return result.get('result')
     else:
         raise Exception('request return with status code {}'.format(r.status_code))
