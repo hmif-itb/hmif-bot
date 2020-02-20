@@ -26,6 +26,8 @@ app.debug = True
 hmif_bot = HMIFLineBotApi(config.get('access_token'))
 handler = WebhookHandler(config.get('secret'))
 
+'''
+# Commented, because this is specific request from HMIF President 19/20
 replies_massa = [
     TextSendMessage(text='M****? KARTU KUNING MAS MBA!'),
     TextSendMessage(text='Ga ada m*ss* di HMIF, adanya anggota'),
@@ -36,7 +38,7 @@ replies_massa = [
     ImageSendMessage(original_content_url='https://hmif-bot.herokuapp.com/images/Meme-2.png',
                      preview_image_url='https://hmif-bot.herokuapp.com/images/Meme-2.png'),
 ]
-
+'''
 
 @app.route("/line-webhook", methods=['POST'])
 def callback():
@@ -108,12 +110,14 @@ def handle_message(event):
             hmif_bot.send_events(event, title, events)
         except Exception as e:
             print(e)
+    '''
     elif (text_contains(message, ['massa'])):
         response = random.choice(replies_massa)
         try:
             hmif_bot.reply_message(event.reply_token, response)
         except Exception as e:
             print(e)
+    '''
 
 
 if __name__ == "__main__":
