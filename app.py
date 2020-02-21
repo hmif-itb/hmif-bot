@@ -1,5 +1,6 @@
 import datetime
 import gcal
+import re
 import random
 
 from flask import Flask, abort, request, send_from_directory
@@ -53,6 +54,12 @@ replies_abay = [
                      preview_image_url='https://hmif-bot.herokuapp.com/images/abay_5.jpg'),
     ImageSendMessage(original_content_url='https://hmif-bot.herokuapp.com/images/abay_6.jpg',
                      preview_image_url='https://hmif-bot.herokuapp.com/images/abay_6.jpg'),
+    ImageSendMessage(original_content_url='https://hmif-bot.herokuapp.com/images/abay_7.jpg',
+                     preview_image_url='https://hmif-bot.herokuapp.com/images/abay_7.jpg'),
+    ImageSendMessage(original_content_url='https://hmif-bot.herokuapp.com/images/abay_8.jpg',
+                     preview_image_url='https://hmif-bot.herokuapp.com/images/abay_8.jpg'),
+    ImageSendMessage(original_content_url='https://hmif-bot.herokuapp.com/images/abay_9.jpg',
+                     preview_image_url='https://hmif-bot.herokuapp.com/images/abay_9.jpg'),
 ]
 
 
@@ -132,7 +139,7 @@ def handle_message(event):
             hmif_bot.reply_message(event.reply_token, response)
         except Exception as e:
             print(e)
-    elif (text_contains(message, ['bay'], max_len=30)):
+    elif (re.compile("\ba?bay\b").match(message) and len(message) <= 30):
         response = random.choice(replies_abay)
         try:
             hmif_bot.reply_message(event.reply_token, response)
