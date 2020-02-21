@@ -40,6 +40,22 @@ replies_massa = [
 ]
 '''
 
+replies_abay = [
+    ImageSendMessage(original_content_url='https://hmif-bot.herokuapp.com/images/abay_1.jpg',
+                     preview_image_url='https://hmif-bot.herokuapp.com/images/abay_1.jpg'),
+    ImageSendMessage(original_content_url='https://hmif-bot.herokuapp.com/images/abay_2.jpg',
+                     preview_image_url='https://hmif-bot.herokuapp.com/images/abay_2.jpg'),
+    ImageSendMessage(original_content_url='https://hmif-bot.herokuapp.com/images/abay_3.jpg',
+                     preview_image_url='https://hmif-bot.herokuapp.com/images/abay_3.jpg'),
+    ImageSendMessage(original_content_url='https://hmif-bot.herokuapp.com/images/abay_4.jpg',
+                     preview_image_url='https://hmif-bot.herokuapp.com/images/abay_4.jpg'),
+    ImageSendMessage(original_content_url='https://hmif-bot.herokuapp.com/images/abay_5.jpg',
+                     preview_image_url='https://hmif-bot.herokuapp.com/images/abay_5.jpg'),
+    ImageSendMessage(original_content_url='https://hmif-bot.herokuapp.com/images/abay_6.jpg',
+                     preview_image_url='https://hmif-bot.herokuapp.com/images/abay_6.jpg'),
+]
+
+
 @app.route("/line-webhook", methods=['POST'])
 def callback():
     signature = request.headers['X-Line-Signature']
@@ -112,6 +128,12 @@ def handle_message(event):
             print(e)
     elif (text_contains(message, ['massa'], max_len=10)):
         response = TextSendMessage(text='Siapa massa... eh abay dah turun deng hehe ')
+        try:
+            hmif_bot.reply_message(event.reply_token, response)
+        except Exception as e:
+            print(e)
+    elif (text_contains(message, ['bay'], max_len=30)):
+        response = random.choice(replies_abay)
         try:
             hmif_bot.reply_message(event.reply_token, response)
         except Exception as e:
