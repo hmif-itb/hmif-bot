@@ -139,7 +139,7 @@ def handle_message(event):
             hmif_bot.reply_message(event.reply_token, response)
         except Exception as e:
             print(e)
-    elif (re.compile(r"\ba?bay\b", re.I | re.M).search(message) and len(message) <= 30):
+    elif (re.compile(r"\ba?bay+\b", re.I | re.M).search(message) and len(message) <= 30):
         response = random.choice(replies_abay)
         try:
             hmif_bot.reply_message(event.reply_token, response)
