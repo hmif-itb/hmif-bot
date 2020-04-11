@@ -18,7 +18,7 @@ from linebot.models import (
 
 from bot import HMIFLineBotApi
 from config import config
-from utils import text_contains
+from utils import text_contains, get_source_id
 
 
 app = Flask(__name__)
@@ -98,13 +98,7 @@ def handle_message(event):
             start_date = today + datetime.timedelta(days=1)
             days = 0
 
-        source_id = None
-        if (isinstance(event.source, SourceGroup)):
-            source_id = event.source.group_id
-        if (isinstance(event.source, SourceRoom)):
-            source_id = event.source.room_id
-        if (isinstance(event.source, SourceUser)):
-            source_id = event.source.user_id
+        source_id = get_source_id(event)
         print(source_id)
         events = gcal.getEvents(message, source_id, start_date=start_date, days=days)
 
@@ -112,14 +106,13 @@ def handle_message(event):
             hmif_bot.send_events(event, title, events)
         except Exception as e:
             print(e)
-    '''
-    elif (text_contains(message, ['massa'], max_len=10)):
-        response = TextSendMessage(text='Siapa massa... eh abay dah turun deng hehe ')
+    elif (message == '/uid'):
+        source_id = get_source_id(event)
+        response = TextSendMessage(text=source_id)
         try:
             hmif_bot.reply_message(event.reply_token, response)
         except Exception as e:
             print(e)
-    '''
 
 
 if __name__ == "__main__":
