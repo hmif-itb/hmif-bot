@@ -149,15 +149,16 @@ class HMIFLineBotApi(LineBotApi):
                 rows.append(content)
 
             messages = []
-            n_break = 10
+            n_break = 14
             chunks = self.__split_list(rows, n_break)
 
             for chunk in chunks:
                 message = self.__wrap_event_message(title, chunk)
                 messages.append(message)
 
-            print('Messages', messages)
-            self.reply_message_raw(line_event.reply_token, messages)
+            print(f'Sending {len(events)} events in {len(messages)} messages..')
+
+            self.reply_message_raw(line_event.reply_token, messages[:5])
         else:
             response = TextSendMessage(text='Wah belum ada event nih!')
             self.reply_message(line_event.reply_token, response)
