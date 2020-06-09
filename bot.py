@@ -99,47 +99,64 @@ class HMIFLineBotApi(LineBotApi):
             })
         return right_box_contents
 
+    def __wrap_event_row(self, left_box_contents, right_box_contents):
+        return {
+            'type': 'box',
+            'layout': 'horizontal',
+            'spacing': 'md',
+            'contents': [
+                {
+                    'type': 'box',
+                    'layout': 'vertical',
+                    'contents': left_box_contents,
+                    'flex': 2,
+                },
+                {
+                    'type': 'box',
+                    'layout': 'vertical',
+                    'contents': right_box_contents,
+                    'flex': 8,
+                }
+            ]
+        }
+
+    def __wrap_event_message(self, title, contents):
+        return {
+            'type': 'flex',
+            'altText': title,
+            'contents': {
+                'type': 'bubble',
+                'body': {
+                    'type': 'box',
+                    'layout': 'vertical',
+                    'spacing': 'md',
+                    'contents': contents,
+                }
+            }
+        }
+
+    def __split_list(self, data, n):
+        chunks = [data[x:x + n] for x in range(0, len(data), n)]
+        return chunks
+
     def send_events(self, line_event, title, events):
         if (len(events) > 0):
-            contents = []
+            rows = []
             for event in events:
                 left_box_contents = self.__create_left_box_content(event)
                 right_box_contents = self.__create_right_box_content(event)
-                content = {
-                    'type': 'box',
-                    'layout': 'horizontal',
-                    'spacing': 'md',
-                    'contents': [
-                        {
-                            'type': 'box',
-                            'layout': 'vertical',
-                            'contents': left_box_contents,
-                            'flex': 2,
-                        },
-                        {
-                            'type': 'box',
-                            'layout': 'vertical',
-                            'contents': right_box_contents,
-                            'flex': 8,
-                        }
-                    ]
-                }
-                contents.append(content)
+                content = self.__wrap_event_row(left_box_contents, right_box_contents)
+                rows.append(content)
 
-            response = {
-                'type': 'flex',
-                'altText': title,
-                'contents': {
-                    'type': 'bubble',
-                    'body': {
-                        'type': 'box',
-                        'layout': 'vertical',
-                        'spacing': 'md',
-                        'contents': contents,
-                    }
-                }
-            }
-            self.reply_message_raw(line_event.reply_token, response)
+            messages = []
+            n_break = 15
+            chunks = self.__split_list(rows, n_break)
+
+            for chunk in chunks:
+                message = self.__wrap_event_message(title, chunk)
+                messages.append(message)
+
+            self.reply_message_raw(line_event.reply_token, messages)
         else:
             response = TextSendMessage(text='Wah belum ada event nih!')
             self.reply_message(line_event.reply_token, response)
