@@ -149,7 +149,7 @@ class HMIFLineBotApi(LineBotApi):
                 rows.append(content)
 
             messages = []
-            n_break = 14
+            n_break = 12
             chunks = self.__split_list(rows, n_break)
 
             for chunk in chunks:
