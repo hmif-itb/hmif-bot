@@ -58,7 +58,7 @@ def handle_message(event):
     message = message.lower()
 
     # Handle help message
-    if (message == 'help'):
+    if (message == 'help hmif bot'):
         response = TextSendMessage(text=reply_help)
         try:
             hmif_bot.reply_message(event.reply_token, response)
