@@ -14,8 +14,12 @@ replies_massa = [
                      preview_image_url='https://hmif-bot.herokuapp.com/images/Meme-2.png'),
 ]
 
-reply_help = '''
+reply_help = \
+'''*Query*
+Format 1:
 Ada deadline apa saja untuk <Nama Jurusan> <Tahun Angkatan> <Jangka Waktu>
+
+Format 2:
 Ada deadline apa saja untuk <Nama Jurusan> <Nama Angkatan> <Jangka Waktu>
 
 Jangka Waktu:
@@ -24,4 +28,8 @@ Jangka Waktu:
 - bulan ini
 - besok
 - minggu depan
+
+*Contoh*
+Ada deadline apa saja untuk STI 18 bulan ini
+Ada deadline apa saja untuk Async bulan ini
 '''
