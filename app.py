@@ -19,6 +19,7 @@ from linebot.models import (
 from bot import HMIFLineBotApi
 from config import config
 from utils import text_contains, get_source_id
+from replies import replies_massa, reply_help
 
 
 app = Flask(__name__)
@@ -26,20 +27,6 @@ app.debug = True
 
 hmif_bot = HMIFLineBotApi(config.get('access_token'))
 handler = WebhookHandler(config.get('secret'))
-
-'''
-# Commented, because this is specific request from HMIF President 19/20
-replies_massa = [
-    TextSendMessage(text='M****? KARTU KUNING MAS MBA!'),
-    TextSendMessage(text='Ga ada m*ss* di HMIF, adanya anggota'),
-    TextSendMessage(text='M****? Tolong ini ditendang dong'),
-    TextSendMessage(text='Eh siapa bilang m****? Ntar dicubit Deborah lho'),
-    ImageSendMessage(original_content_url='https://hmif-bot.herokuapp.com/images/Meme-1.png',
-                     preview_image_url='https://hmif-bot.herokuapp.com/images/Meme-1.png'),
-    ImageSendMessage(original_content_url='https://hmif-bot.herokuapp.com/images/Meme-2.png',
-                     preview_image_url='https://hmif-bot.herokuapp.com/images/Meme-2.png'),
-]
-'''
 
 
 @app.route("/line-webhook", methods=['POST'])
@@ -70,7 +57,16 @@ def handle_message(event):
     message = event.message.text
     message = message.lower()
 
-    # Handle messages
+    # Handle help message
+    if (message == 'help'):
+        response = TextSendMessage(text=reply_help)
+        try:
+            hmif_bot.reply_message(event.reply_token, response)
+        except Exception as e:
+            print(e)
+        return
+
+    # Handle calendar messages
     if (text_contains(message, ['ada', 'apa', 'aja'], series=True, max_len=75)):
         today = datetime.date.today()
         title = ""
