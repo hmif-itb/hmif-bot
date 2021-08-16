@@ -18,7 +18,11 @@ from linebot.models import (
 
 from bot import HMIFLineBotApi
 from config import config
-from utils import text_contains, get_source_id
+from utils import (
+    text_contains, 
+    get_source_id, 
+    count_days_to_end_of_semester,
+)
 from replies import replies_massa, reply_help
 
 
@@ -93,6 +97,10 @@ def handle_message(event):
             title = "Timeline HMIF - Besok"
             start_date = today + datetime.timedelta(days=1)
             days = 0
+        elif (text_contains(message, ['sejauh', 'ini'], series=True)):
+            title = "Timeline HMIF - Deadline Sejauh Ini"
+            start_date = today
+            days = count_days_to_end_of_semester(today)
 
         source_id = get_source_id(event)
         print(source_id)

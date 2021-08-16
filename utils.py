@@ -1,3 +1,5 @@
+import datetime
+
 from linebot.models import (
     SourceGroup,
     SourceRoom,
@@ -32,3 +34,15 @@ def get_source_id(event):
         source_id = event.source.user_id
 
     return source_id
+
+def count_days_to_end_of_semester(today):
+    cur_month = today.month
+    if 1 <= cur_month <= 6: # Even semester ends in June
+        end_month = 6
+        last_date = 30
+    elif 7 <= cur_month <= 12: # Odd semester ends in December
+        end_month = 12
+        last_date = 31
+    last_day = datetime.date(today.year, end_month, last_date)
+    time_delta = last_day - today
+    return time_delta.days
