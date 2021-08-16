@@ -28,6 +28,7 @@ Jangka Waktu:
 - bulan ini
 - besok
 - minggu depan
+- sejauh ini
 
 *Contoh*
 Ada deadline apa saja untuk STI 18 bulan ini
