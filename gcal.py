@@ -3,7 +3,8 @@ import requests
 import sys
 from utils import text_contains
 
-endpoint = 'https://script.google.com/macros/s/AKfycbw9x9Y-9dQucsjVRoevf-QAB1kADg6Z7Sy8sS_424ueX8iRjNjU/exec'
+endpoint = 'https://script.google.com/macros/s/AKfycbx0YswIakU6mXgXvPy-WuGLHnOaPqnsFzdk1jBcX4pPw0XdZu6g8F6CXXjfERSJIN93kA/exec'
+
 
 def getStudentYearFromText(text_message):
     year = None
@@ -21,6 +22,7 @@ def getStudentYearFromText(text_message):
 
     return year
 
+
 def getStudentMajorFromText(text_message):
     major = None
 
@@ -28,11 +30,13 @@ def getStudentMajorFromText(text_message):
         major = 'IF'
     elif text_contains(text_message, ['sti']):
         major = 'STI'
-    
+
     return major
+
 
 def eventIsAssignmentForYear(event, year):
     return event['name'].find(str(year) + ']') != -1
+
 
 def eventFilterAssignmentByYear(events, year):
     filtered = []
@@ -41,8 +45,10 @@ def eventFilterAssignmentByYear(events, year):
             filtered.append(event)
     return filtered
 
+
 def eventIsAssignmentForMajor(event, major):
     return event['name'].find('[' + major) != -1
+
 
 def eventFilterAssignmentByMajor(events, major):
     filtered = []
@@ -50,6 +56,7 @@ def eventFilterAssignmentByMajor(events, major):
         if eventIsAssignmentForMajor(event, major):
             filtered.append(event)
     return filtered
+
 
 def getEvents(text_message, group_id, start_date=None, days=None):
     year = getStudentYearFromText(text_message)
@@ -71,7 +78,7 @@ def getEvents(text_message, group_id, start_date=None, days=None):
     if (r.status_code == 200):
         result = json.loads(str(r.content, 'utf-8'))
         if (result.get('code') != 'SUCCESS'):
-            raise result.get('message')
+            raise Exception(result.get('code'))
         events = result.get('result')
         if year is not None:
             events = eventFilterAssignmentByYear(events, year)
@@ -79,14 +86,15 @@ def getEvents(text_message, group_id, start_date=None, days=None):
             events = eventFilterAssignmentByMajor(events, major)
         return events
     else:
-        raise Exception('request return with status code {}'.format(r.status_code))
+        raise Exception(
+            'request return with status code {}'.format(r.status_code))
 
 
 if __name__ == '__main__':
     days = None if len(sys.argv) < 2 else int(sys.argv[1])
     start_date = None if len(sys.argv) < 3 else sys.argv[2]
 
-    text_message = "ada deadline apa aja bulan ini untuk decrypt"
+    text_message = "ada sidang apa aja besok"
     group_id = "group_id"
 
     print(getEvents(text_message, group_id, start_date=start_date, days=days))
