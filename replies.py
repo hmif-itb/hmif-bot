@@ -15,7 +15,14 @@ replies_massa = [
 ]
 
 reply_help = \
-'''*Query*
+    '''*Query*
+help hmif bot deadline
+help hmif bot seminar
+help hmif bot sidang
+'''
+
+reply_help_deadline = \
+    '''*Query*
 Format 1:
 Ada deadline apa saja untuk <Nama Jurusan> <Tahun Angkatan> <Jangka Waktu>
 
@@ -33,4 +40,25 @@ Jangka Waktu:
 *Contoh*
 Ada deadline apa saja untuk STI 18 bulan ini
 Ada deadline apa saja untuk Async bulan ini
+'''
+
+reply_help_seminar = \
+    '''*Query*
+Format 1:
+Ada seminar apa saja <Jangka Waktu>
+
+Format 2:
+Ada sidang apa saja <Jangka Waktu>
+
+Jangka Waktu:
+- hari ini
+- minggu ini
+- bulan ini
+- besok
+- minggu depan
+- sejauh ini
+
+*Contoh*
+Ada seminar apa saja bulan ini
+Ada sidang apa saja besok
 '''

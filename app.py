@@ -19,11 +19,12 @@ from linebot.models import (
 from bot import HMIFLineBotApi
 from config import config
 from utils import (
-    text_contains, 
-    get_source_id, 
+    text_contains,
+    get_source_id,
     count_days_to_end_of_semester,
 )
-from replies import replies_massa, reply_help
+from replies import (replies_massa, reply_help,
+                     reply_help_deadline, reply_help_seminar)
 
 
 app = Flask(__name__)
@@ -70,6 +71,23 @@ def handle_message(event):
             print(e)
         return
 
+        # Handle help message
+    if (message == 'help hmif bot deadline'):
+        response = TextSendMessage(text=reply_help_deadline)
+        try:
+            hmif_bot.reply_message(event.reply_token, response)
+        except Exception as e:
+            print(e)
+        return
+
+    if ((message == 'help hmif bot seminar') or (message == 'help hmif bot sidang')):
+        response = TextSendMessage(text=reply_help_seminar)
+        try:
+            hmif_bot.reply_message(event.reply_token, response)
+        except Exception as e:
+            print(e)
+        return
+
     # Handle calendar messages
     if (text_contains(message, ['ada', 'apa', 'aja'], series=True, max_len=75)):
         today = datetime.date.today()
@@ -87,7 +105,8 @@ def handle_message(event):
             days = 7
         elif (text_contains(message, ['minggu', 'depan'], series=True)):
             title = "Timeline HMIF - Minggu Depan"
-            start_date = today + datetime.timedelta(days=(7 - today.weekday() - 1))
+            start_date = today + \
+                datetime.timedelta(days=(7 - today.weekday() - 1))
             days = 7
         elif (text_contains(message, ['hari', 'ini'], series=True)):
             title = "Timeline HMIF - Hari Ini"
@@ -104,7 +123,8 @@ def handle_message(event):
 
         source_id = get_source_id(event)
         print(source_id)
-        events = gcal.getEvents(message, source_id, start_date=start_date, days=days)
+        events = gcal.getEvents(
+            message, source_id, start_date=start_date, days=days)
 
         try:
             hmif_bot.send_events(event, title, events)
