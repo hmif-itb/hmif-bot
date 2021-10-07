@@ -24,7 +24,7 @@ from utils import (
     count_days_to_end_of_semester,
 )
 from replies import (replies_massa, reply_help,
-                     reply_help_deadline, reply_help_seminar)
+                     reply_help_deadline, reply_help_seminar, reply_help_ujian)
 
 
 app = Flask(__name__)
@@ -82,6 +82,14 @@ def handle_message(event):
 
     if ((message == 'help hmif bot seminar') or (message == 'help hmif bot sidang')):
         response = TextSendMessage(text=reply_help_seminar)
+        try:
+            hmif_bot.reply_message(event.reply_token, response)
+        except Exception as e:
+            print(e)
+        return
+
+    if ((message == 'help hmif bot ujian')):
+        response = TextSendMessage(text=reply_help_ujian)
         try:
             hmif_bot.reply_message(event.reply_token, response)
         except Exception as e:

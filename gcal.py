@@ -1,7 +1,7 @@
 import json
 import requests
 import sys
-from utils import text_contains
+from utils import text_contains, text_contains_or
 
 endpoint = 'https://script.google.com/macros/s/AKfycbx0YswIakU6mXgXvPy-WuGLHnOaPqnsFzdk1jBcX4pPw0XdZu6g8F6CXXjfERSJIN93kA/exec'
 
@@ -58,6 +58,26 @@ def eventFilterAssignmentByMajor(events, major):
     return filtered
 
 
+def eventFilterByContext(events, context):
+    filtered = []
+    keywordUjian = ["UAS", "UTS"]
+    for event in events:
+        eventName = event.get('name')
+        print(eventName)
+        isEventUjian = text_contains_or(eventName, keywordUjian)
+        if context == "ujian" and isEventUjian:
+            filtered.append(event)
+        elif context == "deadline" and (not isEventUjian):
+            filtered.append(event)
+    return filtered
+
+
+def getContextFromText(text_message):
+    if text_message.find("ujian") != -1:
+        return "ujian"
+    return "deadline"
+
+
 def getEvents(text_message, group_id, start_date=None, days=None):
     year = getStudentYearFromText(text_message)
     major = getStudentMajorFromText(text_message)
@@ -84,6 +104,8 @@ def getEvents(text_message, group_id, start_date=None, days=None):
             events = eventFilterAssignmentByYear(events, year)
         if major is not None:
             events = eventFilterAssignmentByMajor(events, major)
+        context = getContextFromText(text_message)
+        events = eventFilterByContext(events, context)
         return events
     else:
         raise Exception(
@@ -94,7 +116,7 @@ if __name__ == '__main__':
     days = None if len(sys.argv) < 2 else int(sys.argv[1])
     start_date = None if len(sys.argv) < 3 else sys.argv[2]
 
-    text_message = "ada sidang apa aja besok"
+    text_message = "ada ujian apa aja minggu ini untuk sti 18"
     group_id = "group_id"
 
     print(getEvents(text_message, group_id, start_date=start_date, days=days))

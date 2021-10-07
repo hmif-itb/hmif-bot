@@ -19,6 +19,7 @@ reply_help = \
 help hmif bot deadline
 help hmif bot seminar
 help hmif bot sidang
+help hmif bot ujian
 '''
 
 reply_help_deadline = \
@@ -61,4 +62,25 @@ Jangka Waktu:
 *Contoh*
 Ada seminar apa saja bulan ini
 Ada sidang apa saja besok
+'''
+
+reply_help_ujian = \
+    '''*Query*
+Format 1:
+Ada ujian apa saja untuk <Nama Jurusan> <Tahun Angkatan> <Jangka Waktu>
+
+Format 2:
+Ada ujian apa saja untuk <Nama Jurusan> <Nama Angkatan> <Jangka Waktu>
+
+Jangka Waktu:
+- hari ini
+- minggu ini
+- bulan ini
+- besok
+- minggu depan
+- sejauh ini
+
+*Contoh*
+Ada ujian apa saja untuk STI 18 besok
+Ada ujian apa saja untuk Async minggu ini
 '''
