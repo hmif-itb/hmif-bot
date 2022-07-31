@@ -12,4 +12,4 @@ RUN addgroup --gid 1001 -S ${user} && \
     chown ${user}:${user} /var/log/${user}
 USER ${user}
 
-CMD [ "gunicorn", "app:app" ]
+CMD [ "gunicorn", "app:app", "--bind=0.0.0.0" ]

@@ -3,7 +3,7 @@ import gcal
 import re
 import random
 
-from flask import Flask, abort, request, send_from_directory
+from flask import Flask, abort, request, send_from_directory, Response
 from linebot import WebhookHandler
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import (
@@ -55,6 +55,11 @@ def callback():
 @app.route('/images/<path:path>')
 def send_images(path):
     return send_from_directory('images', path)
+
+
+@app.route('/status')
+def status():
+    return Response("{}", status=418, mimetype='application/json')
 
 
 @handler.add(MessageEvent, message=TextMessage)
