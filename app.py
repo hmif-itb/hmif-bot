@@ -50,7 +50,10 @@ def handle_message(event):
     message = event.message.text
     message = message.lower()
 
-    return BotService(event, message).reply()
+    bot = BotService(event, message)
+    bot.reply()
+    del bot
+    return
 
 
 if __name__ == "__main__":
