@@ -1,5 +1,5 @@
 from bot_service import BotService
-from flask import Flask, abort, request, send_from_directory, Response
+from flask import Flask, abort, request, send_from_directory, Response, current_app
 from linebot import WebhookHandler
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import (
@@ -16,15 +16,13 @@ app.debug = True
 BotService.init_bot(config.get('access_token'))
 handler = WebhookHandler(config.get('secret'))
 
-LOGGER = logging.getLogger(__name__)
-
 
 @app.route("/line-webhook", methods=['POST'])
 def callback():
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
 
-    LOGGER.info('POST /line-webhook')
+    current_app.logger.info('POST /line-webhook')
 
     try:
         handler.handle(body, signature)
@@ -41,13 +39,13 @@ def callback():
 
 @app.route('/images/<path:path>')
 def send_images(path):
-    LOGGER.info('/images/<path:path> called - path : %s', path)
+    current_app.logger.info('/images/<path:path> called - path : %s', path)
     return send_from_directory('images', path)
 
 
 @app.route('/status', methods=['GET'])
 def status():
-    LOGGER.info('GET /status called')
+    current_app.logger.info('GET /status called')
     return Response('{"good": "momentos"}', status=418, mimetype='application/json')
 
 

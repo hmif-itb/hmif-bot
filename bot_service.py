@@ -1,16 +1,14 @@
 from bot import HMIFLineBotApi
 import datetime
+from flask import current_app
 from gcal_service import GcalService
 from linebot.models import TextSendMessage
-import logging
 from replies import reply_help, reply_help_deadline, reply_help_seminar, reply_help_ujian
 from utils import (
     text_contains,
     get_source_id,
     count_days_to_end_of_semester,
 )
-
-LOGGER = logging.getLogger(__name__)
 
 
 class BotService:
@@ -41,7 +39,7 @@ class BotService:
             try:
                 self.__hmif_bot.reply_message(self.__event.reply_token, TextSendMessage(source_id))
             except Exception:
-                LOGGER.error('reply - message: /uid', exc_info=True)
+                current_app.logger.error('reply - message: /uid', exc_info=True)
             return
 
     # private helper methods (ORDER ALPHABETICALLY)
@@ -57,10 +55,10 @@ class BotService:
             response = TextSendMessage(text=reply_help)
 
         try:
-            LOGGER.info('__send_help - message : %s - response : %s', self.__message, response)
+            current_app.logger.info('__send_help - message : %s - response : %s', self.__message, response)
             self.__hmif_bot.reply_message(self.__event.reply_token, response)
         except Exception:
-            LOGGER.error('__send_help - message : %s', self.__message, exc_info=True)
+            current_app.logger.error('__send_help - message : %s', self.__message, exc_info=True)
 
     def __send_gcal_event(self):
         today = datetime.date.today()
@@ -98,7 +96,7 @@ class BotService:
         events = GcalService.get_events(self.__message, source_id, start_date=start_date, days=days)
 
         try:
-            LOGGER.info('__send_gcal_event - message : %s', self.__message)
+            current_app.logger.info('__send_gcal_event - message : %s', self.__message)
             self.__hmif_bot.send_events(self.__event, title, events)
         except Exception:
-            LOGGER.error('__send_gcal_event - message %s', self.__message, exc_info=True)
+            current_app.logger.error('__send_gcal_event - message %s', self.__message, exc_info=True)
