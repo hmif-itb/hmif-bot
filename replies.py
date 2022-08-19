@@ -19,8 +19,7 @@ reply_help = \
 help hmif bot deadline
 help hmif bot seminar
 help hmif bot sidang
-help hmif bot ujian
-'''
+help hmif bot ujian'''
 
 reply_help_deadline = \
     '''*Query*
@@ -40,8 +39,7 @@ Jangka Waktu:
 
 *Contoh*
 Ada deadline apa saja untuk STI 18 bulan ini
-Ada deadline apa saja untuk Async bulan ini
-'''
+Ada deadline apa saja untuk Async bulan ini'''
 
 reply_help_seminar = \
     '''*Query*
@@ -61,8 +59,7 @@ Jangka Waktu:
 
 *Contoh*
 Ada seminar apa saja bulan ini
-Ada sidang apa saja besok
-'''
+Ada sidang apa saja besok'''
 
 reply_help_ujian = \
     '''*Query*
@@ -82,5 +79,4 @@ Jangka Waktu:
 
 *Contoh*
 Ada ujian apa saja untuk STI 18 besok
-Ada ujian apa saja untuk Async minggu ini
-'''
+Ada ujian apa saja untuk Async minggu ini'''
