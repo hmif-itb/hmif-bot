@@ -3,7 +3,7 @@ import requests
 import sys
 from utils import text_contains, text_contains_or
 
-endpoint = 'https://script.google.com/a/macros/std.stei.itb.ac.id/s/AKfycbzl25Sw0ZEBUL4pYH9DvpK2hrKQewCqEq9rqr74TV2bJMJLptbPlMyXavqmbOJiMrv1/exec'
+endpoint = 'https://script.google.com/macros/s/AKfycbwXSY3FWlFOIUXiC7wpR--3aVfLbRUKoQBVcL9GtrvA2f2t1vFEOPpUASOLgUn5fTNl/exec'
 
 
 def getStudentYearFromText(text_message):
