@@ -22,8 +22,6 @@ def callback():
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
 
-    current_app.logger.info('POST /line-webhook')
-
     try:
         handler.handle(body, signature)
     except LineBotApiError as e:
@@ -39,13 +37,11 @@ def callback():
 
 @app.route('/images/<path:path>')
 def send_images(path):
-    current_app.logger.info('/images/<path:path> called - path : %s', path)
     return send_from_directory('images', path)
 
 
 @app.route('/status', methods=['GET'])
 def status():
-    current_app.logger.info('GET /status called')
     return Response('{"good": "momentos"}', status=418, mimetype='application/json')
 
 

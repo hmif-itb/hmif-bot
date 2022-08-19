@@ -30,9 +30,15 @@ class GcalService:
         if (r.status_code != 200):
             raise Exception('request return with status code {}'.format(r.status_code))
 
-        result = json.loads(str(r.content, 'utf-8'))
+        try:
+            content = str(r.content, 'utf-8')
+            result = json.loads(content)
+        except json.decoder.JSONDecodeError:
+            raise Exception("Can't decode JSON: " + content)
+
         if (result.get('code') != 'SUCCESS'):
             raise Exception(result.get('code') + ' is not SUCCESS')
+
         events = result.get('result')
         if year is not None:
             events = GcalService.__event_filter_assignment_by_year(events, year)
