@@ -19,6 +19,8 @@ def getStudentYearFromText(text_message):
         year = 19
     elif text_contains(text_message, ['untuk', 'init'], series=True) or text_contains(text_message, ['untuk', '20'], series=True):
         year = 20
+    elif text_contains(text_message, ['untuk', 'sudo'], series=True) or text_contains(text_message, ['untuk', '21'], series=True):
+        year = 21
 
     return year
 
