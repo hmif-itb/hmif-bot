@@ -2,6 +2,9 @@ from utils import text_contains, text_contains_or
 import json
 import requests
 import sys
+import urllib3
+
+requests.packages.urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class GcalService:
