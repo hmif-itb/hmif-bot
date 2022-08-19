@@ -47,13 +47,10 @@ def status():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    message = event.message.text
-    message = message.lower()
+    message: str = event.message.text
+    message = message.lower().strip()
 
-    bot = BotService(event, message)
-    bot.reply()
-    del bot
-    return
+    return BotService(event, message).reply()
 
 
 if __name__ == "__main__":

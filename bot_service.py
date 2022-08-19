@@ -44,11 +44,6 @@ class BotService:
 
     # private helper methods (ORDER ALPHABETICALLY)
     def __send_help(self):
-        current_app.logger.debug(self.__message)
-        current_app.logger.debug(self.__message == 'help hmif bot deadline')
-        current_app.logger.debug(self.__message == 'help hmif bot seminar')
-        current_app.logger.debug(self.__message == 'help hmif bot sidang')
-        current_app.logger.debug(self.__message == 'help hmif bot ujian')
         if self.__message == 'help hmif bot deadline':
             response = TextSendMessage(text=reply_help_deadline)
         elif self.__message == 'help hmif bot seminar' or self.__message == 'help hmif bot sidang':
