@@ -96,7 +96,11 @@ class BotService:
         events = GcalService.get_events(self.__message, source_id, start_date=start_date, days=days)
 
         try:
-            current_app.logger.info('__send_gcal_event - message : %s', self.__message)
+            current_app.logger.info('__send_gcal_event - message : %s - events count : %s',
+                                    self.__message, len(events))
             self.__hmif_bot.send_events(self.__event, title, events)
         except Exception:
-            current_app.logger.error('__send_gcal_event - message %s', self.__message, exc_info=True)
+            self.__hmif_bot.reply_message(self.__event.reply_token,
+                                          TextSendMessage('Gagal mendapatkan event'))
+            current_app.logger.error('__send_gcal_event - message %s', self.__message,
+                                     exc_info=True)
