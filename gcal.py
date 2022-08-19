@@ -3,23 +3,29 @@ import requests
 import sys
 from utils import text_contains, text_contains_or
 
-endpoint = 'https://script.google.com/macros/s/AKfycbwXSY3FWlFOIUXiC7wpR--3aVfLbRUKoQBVcL9GtrvA2f2t1vFEOPpUASOLgUn5fTNl/exec'
+endpoint = 'https://script.google.com/macros/s/AKfycbwXSY3FWlFOIUXiC7wpR--3aVfLbRUKoQBVcL9GtrvA2f2t1vFEOPpUASOLgUn5fTNl/exec'  # noqa
 
 
 def getStudentYearFromText(text_message):
     year = None
 
-    if text_contains(text_message, ['untuk', 'bit'], series=True) or text_contains(text_message, ['untuk', '16'], series=True):
+    if (text_contains(text_message, ['untuk', 'bit'], series=True)
+            or text_contains(text_message, ['untuk', '16'], series=True)):
         year = 16
-    elif text_contains(text_message, ['untuk', 'unix'], series=True) or text_contains(text_message, ['untuk', '17'], series=True):
+    elif (text_contains(text_message, ['untuk', 'unix'], series=True)
+            or text_contains(text_message, ['untuk', '17'], series=True)):
         year = 17
-    elif text_contains(text_message, ['untuk', 'decrypt'], series=True) or text_contains(text_message, ['untuk', '18'], series=True):
+    elif (text_contains(text_message, ['untuk', 'decrypt'], series=True)
+            or text_contains(text_message, ['untuk', '18'], series=True)):
         year = 18
-    elif text_contains(text_message, ['untuk', 'async'], series=True) or text_contains(text_message, ['untuk', '19'], series=True):
+    elif (text_contains(text_message, ['untuk', 'async'], series=True)
+            or text_contains(text_message, ['untuk', '19'], series=True)):
         year = 19
-    elif text_contains(text_message, ['untuk', 'init'], series=True) or text_contains(text_message, ['untuk', '20'], series=True):
+    elif (text_contains(text_message, ['untuk', 'init'], series=True)
+            or text_contains(text_message, ['untuk', '20'], series=True)):
         year = 20
-    elif text_contains(text_message, ['untuk', 'sudo'], series=True) or text_contains(text_message, ['untuk', '21'], series=True):
+    elif (text_contains(text_message, ['untuk', 'sudo'], series=True)
+            or text_contains(text_message, ['untuk', '21'], series=True)):
         year = 21
 
     return year

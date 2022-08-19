@@ -1,17 +1,12 @@
 import datetime
 import gcal
-import re
-import random
+import logging
 
 from flask import Flask, abort, request, send_from_directory, Response
 from linebot import WebhookHandler
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import (
-    ImageSendMessage,
     MessageEvent,
-    SourceGroup,
-    SourceRoom,
-    SourceUser,
     TextMessage,
     TextSendMessage,
 )
@@ -23,8 +18,7 @@ from utils import (
     get_source_id,
     count_days_to_end_of_semester,
 )
-from replies import (replies_massa, reply_help,
-                     reply_help_deadline, reply_help_seminar, reply_help_ujian)
+from replies import (reply_help, reply_help_deadline, reply_help_seminar, reply_help_ujian)
 
 
 app = Flask(__name__)
