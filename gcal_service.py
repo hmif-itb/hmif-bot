@@ -59,7 +59,7 @@ class GcalService:
     def __event_filter_assignment_by_year(events, year):
         filtered = []
         for event in events:
-            if GcalService.__event_filter_assignment_by_year(event, year):
+            if GcalService.__event_is_assignment_for_year(event, year):
                 filtered.append(event)
         return filtered
 

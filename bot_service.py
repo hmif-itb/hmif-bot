@@ -16,7 +16,7 @@ class BotService:
     def init_bot(cls, bot_config):
         cls.__hmif_bot = HMIFLineBotApi(bot_config)
 
-    def __init__(self, event, message):
+    def __init__(self, event, message: str):
         '''
         event: Line Bot event from webhook
         '''
@@ -44,6 +44,11 @@ class BotService:
 
     # private helper methods (ORDER ALPHABETICALLY)
     def __send_help(self):
+        current_app.logger.debug(self.__message)
+        current_app.logger.debug(self.__message == 'help hmif bot deadline')
+        current_app.logger.debug(self.__message == 'help hmif bot seminar')
+        current_app.logger.debug(self.__message == 'help hmif bot sidang')
+        current_app.logger.debug(self.__message == 'help hmif bot ujian')
         if self.__message == 'help hmif bot deadline':
             response = TextSendMessage(text=reply_help_deadline)
         elif self.__message == 'help hmif bot seminar' or self.__message == 'help hmif bot sidang':
