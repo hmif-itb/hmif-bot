@@ -1,4 +1,5 @@
 from datetime import datetime
+from flask import current_app
 from linebot import LineBotApi
 from linebot.models import TextSendMessage
 import json
@@ -156,7 +157,7 @@ class HMIFLineBotApi(LineBotApi):
                 message = self.__wrap_event_message(title, chunk)
                 messages.append(message)
 
-            print(f'Sending {len(events)} events in {len(messages)} messages..')
+            current_app.logger.info(f'Sending {len(events)} events in {len(messages)} messages..')
 
             self.reply_message_raw(line_event.reply_token, messages[:5])
         else:

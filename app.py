@@ -25,10 +25,11 @@ def callback():
     try:
         handler.handle(body, signature)
     except LineBotApiError as e:
-        print("Got exception from LINE Messaging API: %s\n" % e.message)
+        errors = ''
         for m in e.error.details:
-            print("  %s: %s" % (m.property, m.message))
-        print("\n")
+            errors += f'  {m.property}: {m.message}'
+        current_app.logger.error("Got exception from LINE Messaging API: %s\n%s" % e.message,
+                                 errors)
     except InvalidSignatureError:
         abort(400)
 

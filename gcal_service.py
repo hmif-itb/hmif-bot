@@ -71,7 +71,6 @@ class GcalService:
         keywordUjian = ["UAS", "UTS"]
         for event in events:
             eventName = event.get('name')
-            print(eventName)
             isEventUjian = text_contains_or(eventName, keywordUjian)
             if context == "ujian" and isEventUjian:
                 filtered.append(event)
