@@ -45,7 +45,7 @@ class BotService:
     def __send_help(self):
         if self.__message == 'help hmif bot deadline':
             response = TextSendMessage(text=reply_help_deadline)
-        elif self.__message == 'help hmif bot seminar' or self.message == 'help hmif bot sidang':
+        elif self.__message == 'help hmif bot seminar' or self.__message == 'help hmif bot sidang':
             response = TextSendMessage(text=reply_help_seminar)
         elif self.__message == 'help hmif bot ujian':
             response = TextSendMessage(text=reply_help_ujian)

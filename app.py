@@ -12,7 +12,7 @@ from config import config
 app = Flask(__name__)
 app.debug = True
 
-BotService.init_bot(config.get('secret'))
+BotService.init_bot(config.get('access_token'))
 handler = WebhookHandler(config.get('secret'))
 
 
