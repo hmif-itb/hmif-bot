@@ -6,6 +6,7 @@ from linebot.models import (
     MessageEvent,
     TextMessage,
 )
+import logging
 from config import config
 
 
@@ -15,11 +16,15 @@ app.debug = True
 BotService.init_bot(config.get('access_token'))
 handler = WebhookHandler(config.get('secret'))
 
+LOGGER = logging.getLogger(__name__)
+
 
 @app.route("/line-webhook", methods=['POST'])
 def callback():
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
+
+    LOGGER.info('POST /line-webhook')
 
     try:
         handler.handle(body, signature)
@@ -36,12 +41,14 @@ def callback():
 
 @app.route('/images/<path:path>')
 def send_images(path):
+    LOGGER.info('/images/<path:path> called - path : %s', path)
     return send_from_directory('images', path)
 
 
-@app.route('/status')
+@app.route('/status', methods=['GET'])
 def status():
-    return Response("{}", status=418, mimetype='application/json')
+    LOGGER.info('GET /status called')
+    return Response('{"good": "momentos"}', status=418, mimetype='application/json')
 
 
 @handler.add(MessageEvent, message=TextMessage)
@@ -53,4 +60,6 @@ def handle_message(event):
 
 
 if __name__ == "__main__":
+    logging.basicConfig(format='[%(levelname)s] %(asctime)s $(filename)s:%(lineno)s : ',
+                        level=logging.INFO)
     app.run()

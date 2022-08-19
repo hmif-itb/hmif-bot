@@ -2,6 +2,7 @@ from bot import HMIFLineBotApi
 import datetime
 from gcal_service import GcalService
 from linebot.models import TextSendMessage
+import logging
 from replies import reply_help, reply_help_deadline, reply_help_seminar, reply_help_ujian
 from utils import (
     text_contains,
@@ -9,13 +10,15 @@ from utils import (
     count_days_to_end_of_semester,
 )
 
+LOGGER = logging.getLogger(__name__)
+
 
 class BotService:
     @classmethod
     def init_bot(cls, bot_config):
         cls.__hmif_bot = HMIFLineBotApi(bot_config)
 
-    def __init__(self, event, message: str):
+    def __init__(self, event, message):
         '''
         event: Line Bot event from webhook
         '''
@@ -37,8 +40,8 @@ class BotService:
             source_id = get_source_id(self.__event)
             try:
                 self.__hmif_bot.reply_message(self.__event.reply_token, TextSendMessage(source_id))
-            except Exception as e:
-                print(e)
+            except Exception:
+                LOGGER.error('reply - message: /uid', exc_info=True)
             return
 
     # private helper methods (ORDER ALPHABETICALLY)
@@ -54,9 +57,10 @@ class BotService:
             response = TextSendMessage(text=reply_help)
 
         try:
+            LOGGER.info('__send_help - message : %s - response : %s', self.__message, response)
             self.__hmif_bot.reply_message(self.__event.reply_token, response)
-        except Exception as e:
-            print(e)
+        except Exception:
+            LOGGER.error('__send_help - message : %s', self.__message, exc_info=True)
 
     def __send_gcal_event(self):
         today = datetime.date.today()
@@ -94,6 +98,7 @@ class BotService:
         events = GcalService.get_events(self.__message, source_id, start_date=start_date, days=days)
 
         try:
+            LOGGER.info('__send_gcal_event - message : %s', self.__message)
             self.__hmif_bot.send_events(self.__event, title, events)
-        except Exception as e:
-            print(e)
+        except Exception:
+            LOGGER.error('__send_gcal_event - message %s', self.__message, exc_info=True)
