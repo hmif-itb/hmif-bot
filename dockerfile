@@ -2,6 +2,9 @@ FROM python:3.10.5-alpine3.16
 
 ARG user=hmif
 
+RUN apk add --no-cache tzdata
+ENV TZ=Asia/Jakarta
+
 # as root
 WORKDIR /app
 COPY . .
