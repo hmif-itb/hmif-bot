@@ -69,12 +69,16 @@ class GcalService:
     def __event_filter_by_context(events, context):
         filtered = []
         keywordUjian = ["UAS", "UTS"]
+        keywordTA = ["Sidang", "Seminar"]
         for event in events:
             eventName = event.get('name')
             isEventUjian = text_contains_or(eventName, keywordUjian)
+            isEventTA = text_contains_or(eventName,keywordTA)
             if context == "ujian" and isEventUjian:
                 filtered.append(event)
-            elif context == "deadline" and (not isEventUjian):
+            elif context == "TA" and isEventTA:
+                filtered.append(event)
+            elif context == "deadline" and (not isEventUjian and not isEventTA):
                 filtered.append(event)
         return filtered
 
@@ -86,10 +90,12 @@ class GcalService:
 
     def __get_context_from_text(text_message):
         '''
-        context is "ujian" or "deadline"
+        context is "ujian" or "deadline" or "TA"
         '''
         if text_message.find("ujian") != -1:
             return "ujian"
+        elif text_message.find("seminar") != -1 or text_message.find("sidang") != -1:
+            return "TA"
         return "deadline"
 
     def __get_student_major_from_text(text_message):
@@ -131,7 +137,7 @@ if __name__ == '__main__':
     days = None if len(sys.argv) < 2 else int(sys.argv[1])
     start_date = None if len(sys.argv) < 3 else sys.argv[2]
 
-    text_message = "ada ujian apa aja minggu ini untuk sti 18"
+    text_message = "ada seminar apa aja minggu ini untuk async"
     group_id = "group_id"
 
-    print(GcalService.getEvents(text_message, group_id, start_date=start_date, days=days))
+    print(GcalService.get_events(text_message, group_id, start_date=start_date, days=days))
