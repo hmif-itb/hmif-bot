@@ -43,7 +43,7 @@ def send_images(path):
 
 @app.route('/status', methods=['GET'])
 def status():
-    return Response('{"good": "momentos"}', status=418, mimetype='application/json')
+    return Response('{"good": "momentos"}', status=200, mimetype='application/json')
 
 
 @handler.add(MessageEvent, message=TextMessage)
