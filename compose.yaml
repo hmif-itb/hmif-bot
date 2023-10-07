@@ -1,0 +1,10 @@
+services:
+  bot:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - secret=${secret}
+      - access_token=${access_token}
+      - private_group=${private_group}
+      - pass_code=${pass_code}

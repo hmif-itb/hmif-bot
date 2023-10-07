@@ -2,3 +2,4 @@ Flask==2.1.3
 gunicorn==19.9.0
 line-bot-sdk==1.8.0
 requests==2.20.0
+Werkzeug==2.2.2
