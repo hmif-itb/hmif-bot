@@ -129,6 +129,9 @@ class GcalService:
         elif (text_contains(text_message, ['untuk', 'sudo'], series=True)
                 or text_contains(text_message, ['untuk', '21'], series=True)):
             year = 21
+        elif (text_contains(text_message, ['untuk', 'byte'], series=True)
+                or text_contains(text_message, ['untuk', '22'], series=True)):
+            year = 22
 
         return year
 
@@ -137,7 +140,7 @@ if __name__ == '__main__':
     days = None if len(sys.argv) < 2 else int(sys.argv[1])
     start_date = None if len(sys.argv) < 3 else sys.argv[2]
 
-    text_message = "ada seminar apa aja minggu ini untuk async"
+    text_message = "ada seminar apa aja minggu ini untuk init"
     group_id = "group_id"
 
     print(GcalService.get_events(text_message, group_id, start_date=start_date, days=days))
